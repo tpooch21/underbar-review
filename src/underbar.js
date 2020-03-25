@@ -112,6 +112,23 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    iterator = iterator || _.identity;
+
+    var result = [];
+    // Create an object that has keys and values that b
+    var functionResults = {};
+
+    _.each(array, function(el) {
+      if (functionResults[iterator(el).toString()] === undefined) {
+        functionResults[iterator(el).toString()] = el;
+      }
+    });
+
+    _.each(functionResults, function(value) {
+      result.push(value);
+    });
+
+    return result;
   };
 
 
