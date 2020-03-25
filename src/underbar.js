@@ -137,6 +137,11 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var result = [];
+    _.each(collection, function(item) {
+      result.push(iterator(item));
+    });
+    return result;
   };
 
   /*
@@ -148,6 +153,7 @@
   // Takes an array of objects and returns and array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
+  // [{Joe: 23}, {Mary: 35}]
   _.pluck = function(collection, key) {
     // TIP: map is really handy when you want to transform an array of
     // values into a new array of values. _.pluck() is solved for you
@@ -177,8 +183,49 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
+
   _.reduce = function(collection, iterator, accumulator) {
+
+    if (accumulator !== undefined) {
+      var result = accumulator;
+      _.each(collection, function(item) {
+        result = iterator(result, item);
+      })
+      return result;
+    } else {
+      if (Array.isArray(collection)) {
+        var result = collection[0];
+        for (var i = 1; i < collection.length; i++) {
+          result = iterator(result, collection[i]);
+        }
+        return result;
+      } else {
+        var result = 0;
+        for (var key in collection) {
+          result = iterator(result, collection[key]);
+        }
+        return result;
+      }
+    }
+
   };
+  //   if (Array.isArray(collection)) {
+  //     // var accumulator = accumulator || collection[0];
+  //     if (accumulator) {
+  //       for (var i = 0; i < collection.length; i++) {
+  //         accumulator = iterator(accumulator, collection[i]);
+  //       }
+
+  //     }
+
+
+  //   } else {
+
+  //   }
+
+
+
+  // };
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
