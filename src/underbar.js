@@ -346,7 +346,9 @@
       if (_.contains(Object.keys(previousCalls), args)) {
         return previousCalls[args];
       }
-      previousCalls[args] = func.apply(this, args);
+      var results = func.apply(this, arguments);
+      previousCalls[args] = results;
+      return results;
     }
 
   };
